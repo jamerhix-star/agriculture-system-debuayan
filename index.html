@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agriculture Information System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    th[data-sort] { cursor: pointer; white-space: nowrap; user-select: none; }
+    .card a { color: inherit; }
+    @media print { .no-print, nav { display: none !important; } }
+  </style>
+</head>
+<body class="bg-light">
+
+<div id="alerts" class="position-fixed top-0 start-50 translate-middle-x mt-3 no-print" style="z-index:2000;width:min(92%,520px)"></div>
+
+<!-- Loading -->
+<div id="boot" class="text-center py-5 mt-5"><div class="spinner-border text-success"></div></div>
+
+<!-- Login page -->
+<div id="login" class="d-none">
+  <div class="min-vh-100 d-flex align-items-center justify-content-center p-3">
+    <div class="card shadow-sm" style="width:100%;max-width:400px">
+      <div class="card-body p-4">
+        <h4 class="text-center text-success mb-1">Agriculture Information System</h4>
+        <p class="text-center text-muted small mb-4">Cebu Technological University</p>
+        <form id="loginForm" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="lemail">Email</label>
+            <input id="lemail" type="email" class="form-control" autocomplete="username">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="lpass">Password</label>
+            <input id="lpass" type="password" class="form-control" autocomplete="current-password">
+          </div>
+          <div id="loginMsg" class="text-danger small mb-2"></div>
+          <button id="btnLogin" type="submit" class="btn btn-success w-100">Log in</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Main application -->
+<div id="app" class="d-none">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#/dashboard">AgriInfo System</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item"><a class="nav-link" href="#/dashboard">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="#/farmers">Farmers</a></li>
+          <li class="nav-item"><a class="nav-link" href="#/farms">Farms</a></li>
+          <li class="nav-item"><a class="nav-link" href="#/crops">Crops</a></li>
+          <li class="nav-item"><a class="nav-link" href="#/plantings">Planting</a></li>
+          <li class="nav-item"><a class="nav-link" href="#/harvests">Harvest</a></li>
+          <li class="nav-item"><a class="nav-link" href="#/reports">Reports</a></li>
+        </ul>
+        <span class="navbar-text me-3">
+          <span id="uName"></span> <span id="uRole" class="badge bg-light text-dark"></span>
+        </span>
+        <button id="btnLogout" type="button" class="btn btn-outline-light btn-sm">Logout</button>
+      </div>
+    </div>
+  </nav>
+  <main class="container-fluid p-3 p-md-4" id="view"></main>
+</div>
+
+<!-- Shared modal (view / add / edit) -->
+<div class="modal fade" id="modal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="mTitle"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="mBody"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <span id="mFooter"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
