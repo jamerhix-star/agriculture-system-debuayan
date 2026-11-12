@@ -320,12 +320,19 @@ function renderModule(key) {
   });
 
   loadRows(key);
-  getOptions(m.filter.ref).then(opts => {
-    const sel = $('#flt');
-    if (!sel || current() !== key) return;
-    sel.insertAdjacentHTML('beforeend', opts.map(o => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join(''));
-    sel.value = st.filter;
-  });
+  loadFilter(key);
+}
+
+// Fills the filter dropdown from the database. Called again after add/edit/delete
+// so new values (for example a new municipality) show up without a page refresh.
+async function loadFilter(key) {
+  const m = MODULES[key], st = STATE[key];
+  const opts = await getOptions(m.filter.ref);
+  const sel = $('#flt');
+  if (!sel || current() !== key) return;
+  sel.innerHTML = `<option value="">All ${m.filter.l}</option>` + opts.map(o => `<option value="${esc(o.value)}">${esc(o.label)}</option>`).join('');
+  sel.value = st.filter;
+  if (sel.value !== st.filter) { st.filter = ''; sel.value = ''; loadRows(key); }   // chosen value no longer exists
 }
 
 async function loadRows(key) {
@@ -509,7 +516,7 @@ async function saveForm(key, id) {
   closeModal();
   flash(`${m.single} ${id ? 'updated' : 'added'} successfully.`);
   if (!id) STATE[key].page = 1;
-  if (current() === key) loadRows(key);
+  if (current() === key) { loadRows(key); loadFilter(key); }
 }
 
 /* ---------- Delete (with confirmation) ---------- */
@@ -521,6 +528,7 @@ async function delRow(key, id) {
   if (!data || !data.length) return flash('Nothing was deleted. You may not have permission, or the record no longer exists.', 'warning');
   flash(`${m.single} deleted successfully.`);
   loadRows(key);
+  loadFilter(key);
 }
 
 /* ---------- Reports ---------- */
